@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-layout">
     <Sidebar />
-    <div class="pl-72 py-[3%]">
+    <div class="md:pl-80 pl-8 py-20 md:py-[3%]">
       <router-view />
     </div>
   </div>
