@@ -1,0 +1,6 @@
+@BI_Presence.Server_HostAddress = http://localhost:5124
+
+GET {{BI_Presence.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
