@@ -7,6 +7,9 @@ export default {
       colors: {
         primary: "#015699",
       },
+      width: {
+        customFrame: '980px'
+      }
     },
     plugins: [],
   },
