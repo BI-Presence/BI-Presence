@@ -9,7 +9,7 @@ const showModal = ref<boolean>(false);
 const loading = ref<boolean>(false);
 const showWarning = ref<boolean>(false); // validation image file (.jpg, .jpeg, .png)
 const warningMessage = ref<string>(""); // validation to upload image before pressing button "submit"
-const previewImage = ref<string>("../assets/ic_image.png");
+const previewImage = ref<string>("src/assets/ic_image.png");
 const isFileValid = ref<boolean>(false);
 
 // Validation "file" input
