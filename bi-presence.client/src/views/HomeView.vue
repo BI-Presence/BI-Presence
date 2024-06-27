@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts">
-console.log("amasuk");
 export default {
   name: "HomeView",
 };
