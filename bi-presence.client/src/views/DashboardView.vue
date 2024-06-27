@@ -7,7 +7,6 @@
 
 
 <script lang="ts">
-console.log("masuk sini");
 export default {
   name: "DashboardView",
 };

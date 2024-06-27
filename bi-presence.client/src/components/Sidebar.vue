@@ -1,6 +1,6 @@
 <template>
   <div class="h-full">
-    <div class="fixed left-8 top-10 z-50">
+    <div class="fixed left-8 top-10 z-[70]">
       <MenuIcon :isOpen="open" @toggle="toggleMenu" />
     </div>
     <div

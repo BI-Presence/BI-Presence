@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import logoBI from "../assets/logo-bi.svg";
-import ic_image from "../assets/ic_image.png";
-import upload_icon from "../assets/upload.png";
 import ModalSuccess from "../components/ModalSuccess.vue";
 import LoadingIndicator from "../components/LoadingIndicator.vue";
 
@@ -12,7 +9,7 @@ const showModal = ref<boolean>(false);
 const loading = ref<boolean>(false);
 const showWarning = ref<boolean>(false); // validation image file (.jpg, .jpeg, .png)
 const warningMessage = ref<string>(""); // validation to upload image before pressing button "submit"
-const previewImage = ref<string>(ic_image);
+const previewImage = ref<string>("src/assets/ic_image.png");
 const isFileValid = ref<boolean>(false);
 
 // Validation "file" input
@@ -44,12 +41,12 @@ const handleFileChange = (e: Event) => {
       warningMessage.value =
         "Please upload a valid image file (.jpg, .jpeg, .png).";
       selectedFileName.value = "Only .jpg, .jpeg, .png";
-      previewImage.value = ic_image;
+      previewImage.value = "../assets/ic_image.png";
       isFileValid.value = false;
     }
   } else {
     selectedFileName.value = "Only .jpg, .jpeg, .png";
-    previewImage.value = ic_image;
+    previewImage.value = "../assets/ic_image.png";
     isFileValid.value = false;
   }
 };
@@ -94,14 +91,14 @@ const truncatedFileName = computed(() => {
 </script>
 
 <template>
-  <div class="bg-primary flex justify-center items-center min-h-screen">
+  <div class="bg-primary p-12 flex justify-center items-center min-h-screen">
     <form
-      class="max-h-svh w-fit lg:w-customFrame bg-white text-black rounded-3xl shadow-lg flex flex-col items-center py-5"
+      class="w-fit lg:w-customFrame bg-white text-black rounded-3xl shadow-lg flex flex-col items-center py-5"
       style="height: auto"
       @submit="handleSubmit"
     >
       <!-- title -->
-      <img :src="logoBI" alt="logo" class="mb-4 w-32" />
+      <img src="../assets/logo-bi.svg" alt="logo" class="mb-4 w-32" />
       <h1 class="text-black text-center mb-4" style="font-size: 32px">
         BI - Presence
       </h1>
@@ -119,7 +116,11 @@ const truncatedFileName = computed(() => {
             for="file_input"
             class="col-span-1 flex items-center border-2 border-primary rounded-lg cursor-pointer bg-white text-primary py-2 justify-center dark:text-primary focus:outline-none dark:border-primary dark:placeholder-gray-400 dark:bg-white dark:hover:bg-slate-200 dark:hover:border-2 dark:hover:border-primary dark:hover:border-opacity-90hover:text-white transition font-bold w-full"
           >
-            <img :src="upload_icon" alt="upload icon" class="h-6 mr-2" />
+            <img
+              src="../assets/upload.png"
+              alt="upload icon"
+              class="h-6 mr-2"
+            />
             <h1>Upload Foto</h1>
             <input
               class="hidden"
@@ -142,7 +143,7 @@ const truncatedFileName = computed(() => {
 
       <button
         type="submit"
-        class="text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full border-2 border-white sm:w-auto px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-primary dark:hover:opacity-90 dark:hover:border-2 dark:hover:text-white dark:focus:ring-blue-800 transition"
+        class="text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-fit border-2 border-white sm:w-auto px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-primary dark:hover:opacity-90 dark:hover:border-2 dark:hover:text-white dark:focus:ring-blue-800 transition"
         :disabled="loading || !isFileValid"
       >
         <span v-if="loading">Loading...</span>
@@ -154,7 +155,7 @@ const truncatedFileName = computed(() => {
         <div class="grid justify-items-end pe-1">
           <hr class="w-20 border-t-2 border-primary border-1 my-4" />
         </div>
-        <p class="">Ingin melakukan login?</p>
+        <p class="text-center">Ingin melakukan login?</p>
         <div class="grid justify-items-start ps-1">
           <hr class="w-20 border-t-2 border-primary border-1 my-4" />
         </div>
