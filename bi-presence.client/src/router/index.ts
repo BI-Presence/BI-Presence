@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardLayout from "../layout/DashboardLayout.vue";
-import DashboardView from "../views/DashboardView.vue";
+import DashboardViewSuper from "../views/DashboardView-supervisor.vue";
+import DashboardViewEmploy from "../views/DashboardView-employee.vue";
 
 const routes = [
   {
@@ -22,9 +23,14 @@ const routes = [
     redirect: "/dashboard",
     children: [
       {
-        path: "/dashboard",
-        name: "Dashboard",
-        component: DashboardView,
+        path: "/dashboard/supervisor",
+        name: "DashboardSupervisor",
+        component: DashboardViewSuper,
+      },
+      {
+        path: "/dashboard/employee",
+        name: "DashboardEmployee",
+        component: DashboardViewEmploy,
       },
     ],
   },
