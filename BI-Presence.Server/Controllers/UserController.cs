@@ -29,7 +29,7 @@ namespace BI_Presence.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetUserById([FromRoute] int id)
+        public IActionResult GetUserById([FromRoute] int id) // janlup tambahin search name by query, sort by query and pagination
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
