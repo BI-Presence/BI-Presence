@@ -35,10 +35,10 @@
         <ul class="flex flex-col gap-3 px-3 text-white">
           <li>
             <router-link
-              to="/"
+              to="/dashboard/supervisor"
               :class="[
                 'flex items-center gap-4 rounded-lg px-5 py-3',
-                isActive('/dashboard') ? 'bg-[#85aadd]' : '',
+                isActive('/dashboard/supervisor') ? 'bg-[#85aadd]' : '',
               ]"
             >
               <svg
@@ -151,7 +151,7 @@ export default {
     };
 
     const goHome = () => {
-      router.push("/");
+      router.push("/dashboard/supervisor");
     };
 
     const handleSignOut = async () => {
