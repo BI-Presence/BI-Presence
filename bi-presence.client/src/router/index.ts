@@ -4,6 +4,8 @@ import LoginView from "../views/LoginView.vue";
 import PresenceView from "../views/PresenceView.vue";
 import DashboardLayout from "../layout/DashboardLayout.vue";
 import DashboardView from "../views/DashboardView.vue";
+import EditProfileView from "../views/EditProfileView.vue";
+import DataEmployeeView from "../views/DataEmployeeView.vue";
 
 const routes = [
   {
@@ -26,6 +28,16 @@ const routes = [
         path: "/dashboard",
         name: "Dashboard",
         component: DashboardView,
+      },
+      {
+        path: "/dashboard/editprofile",
+        name: "Edit Profile",
+        component: EditProfileView,
+      },
+      {
+        path: "/dashboard/dataemployee",
+        name: "Data Employee",
+        component: DataEmployeeView,
       },
     ],
   },
