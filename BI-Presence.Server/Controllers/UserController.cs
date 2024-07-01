@@ -51,5 +51,47 @@ namespace BI_Presence.Server.Controllers
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user.ToGetUserDto());
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser([FromRoute] int id, [FromBody] UpdateUserRequestDto dto)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.FullName = dto.FullName;
+            user.Email = dto.Email;
+            user.Role = dto.Role;
+            user.BirthDate = dto.BirthDate;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.Address = dto.Address;
+            user.SatuanKerja = dto.SatuanKerja;
+            user.Jabatan = dto.Jabatan;
+            user.NIK = dto.NIK;
+            user.UpdatedAt = DateTime.Now;
+
+            _context.SaveChanges();
+
+            return Ok(user.ToGetUserDto());
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser([FromRoute] int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
