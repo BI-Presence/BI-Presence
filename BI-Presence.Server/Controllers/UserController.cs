@@ -22,7 +22,7 @@ namespace BI_Presence.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers() // janlup tambahin search name by query, sort by query and pagination by query
         {
             var users = await _context.Users.ToListAsync();
 
@@ -30,7 +30,7 @@ namespace BI_Presence.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById([FromRoute] int id) // janlup tambahin search name by query, sort by query and pagination
+        public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
