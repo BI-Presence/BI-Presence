@@ -6,6 +6,7 @@ using BI_Presence.Server.Data;
 using BI_Presence.Server.Dtos.User;
 using BI_Presence.Server.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BI_Presence.Server.Controllers
 {
@@ -21,17 +22,17 @@ namespace BI_Presence.Server.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = _context.Users.ToList();
+            var users = await _context.Users.ToListAsync();
 
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetUserById([FromRoute] int id) // janlup tambahin search name by query, sort by query and pagination
+        public async Task<IActionResult> GetUserById([FromRoute] int id) // janlup tambahin search name by query, sort by query and pagination
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
@@ -42,20 +43,20 @@ namespace BI_Presence.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] CreateUserRequestDto dto)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequestDto dto)
         {
             var user = dto.ToUserFromCreateDTO();
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user.ToGetUserDto());
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser([FromRoute] int id, [FromBody] UpdateUserRequestDto dto)
+        public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserRequestDto dto)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
@@ -73,15 +74,15 @@ namespace BI_Presence.Server.Controllers
             user.NIK = dto.NIK;
             user.UpdatedAt = DateTime.Now;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(user.ToGetUserDto());
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {
@@ -89,7 +90,7 @@ namespace BI_Presence.Server.Controllers
             }
 
             _context.Users.Remove(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
