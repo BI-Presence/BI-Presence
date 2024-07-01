@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BI_Presence.Server.Data;
+using BI_Presence.Server.Dtos.User;
+using BI_Presence.Server.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BI_Presence.Server.Controllers
@@ -37,6 +39,17 @@ namespace BI_Presence.Server.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] CreateUserRequestDto dto)
+        {
+            var user = dto.ToUserFromCreateDTO();
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user.ToGetUserDto());
         }
     }
 }
