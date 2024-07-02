@@ -15,13 +15,11 @@ namespace BI_Presence.Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
         private readonly IUserRepository _userRepository;
 
         public UserController(ApplicationDBContext context, IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _context = context;
         }
 
         [HttpGet]
