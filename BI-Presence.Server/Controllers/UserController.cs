@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BI_Presence.Server.Data;
 using BI_Presence.Server.Dtos.User;
+using BI_Presence.Server.Interfaces;
 using BI_Presence.Server.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,22 @@ namespace BI_Presence.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(ApplicationDBContext context)
+        public UserController(ApplicationDBContext context, IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers() // janlup tambahin search name by query, sort by query and pagination by query
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _userRepository.GetAllUsers();
 
-            return Ok(users);
+            var usersDto = users.Select(u => u.ToGetUserDto());
+
+            return Ok(usersDto);
         }
 
         [HttpGet("{id}")]
@@ -39,7 +44,7 @@ namespace BI_Presence.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(user.ToGetUserDto());
         }
 
         [HttpPost]
