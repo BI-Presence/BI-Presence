@@ -37,7 +37,7 @@ namespace BI_Presence.Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userRepository.GetUserById(id);
 
             if (user == null)
             {
@@ -52,8 +52,7 @@ namespace BI_Presence.Server.Controllers
         {
             var user = dto.ToUserFromCreateDTO();
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await _userRepository.CreateUser(user);
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user.ToGetUserDto());
         }
@@ -61,25 +60,12 @@ namespace BI_Presence.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserRequestDto dto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userRepository.UpdateUser(id, dto);
 
             if (user == null)
             {
                 return NotFound();
             }
-
-            user.FullName = dto.FullName;
-            user.Email = dto.Email;
-            user.Role = dto.Role;
-            user.BirthDate = dto.BirthDate;
-            user.PhoneNumber = dto.PhoneNumber;
-            user.Address = dto.Address;
-            user.SatuanKerja = dto.SatuanKerja;
-            user.Jabatan = dto.Jabatan;
-            user.NIK = dto.NIK;
-            user.UpdatedAt = DateTime.Now;
-
-            await _context.SaveChangesAsync();
 
             return Ok(user.ToGetUserDto());
         }
@@ -87,15 +73,12 @@ namespace BI_Presence.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userRepository.DeleteUser(id);
 
             if (user == null)
             {
                 return NotFound();
             }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
