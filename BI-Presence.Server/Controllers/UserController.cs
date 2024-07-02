@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BI_Presence.Server.Data;
 using BI_Presence.Server.Dtos.User;
+using BI_Presence.Server.Interfaces;
 using BI_Presence.Server.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,31 +16,35 @@ namespace BI_Presence.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(ApplicationDBContext context)
+        public UserController(ApplicationDBContext context, IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers() // janlup tambahin search name by query, sort by query and pagination by query
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _userRepository.GetAllUsers();
 
-            return Ok(users);
+            var usersDto = users.Select(u => u.ToGetUserDto());
+
+            return Ok(usersDto);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userRepository.GetUserById(id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(user.ToGetUserDto());
         }
 
         [HttpPost]
@@ -47,8 +52,7 @@ namespace BI_Presence.Server.Controllers
         {
             var user = dto.ToUserFromCreateDTO();
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await _userRepository.CreateUser(user);
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user.ToGetUserDto());
         }
@@ -56,25 +60,12 @@ namespace BI_Presence.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserRequestDto dto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userRepository.UpdateUser(id, dto);
 
             if (user == null)
             {
                 return NotFound();
             }
-
-            user.FullName = dto.FullName;
-            user.Email = dto.Email;
-            user.Role = dto.Role;
-            user.BirthDate = dto.BirthDate;
-            user.PhoneNumber = dto.PhoneNumber;
-            user.Address = dto.Address;
-            user.SatuanKerja = dto.SatuanKerja;
-            user.Jabatan = dto.Jabatan;
-            user.NIK = dto.NIK;
-            user.UpdatedAt = DateTime.Now;
-
-            await _context.SaveChangesAsync();
 
             return Ok(user.ToGetUserDto());
         }
@@ -82,15 +73,12 @@ namespace BI_Presence.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userRepository.DeleteUser(id);
 
             if (user == null)
             {
                 return NotFound();
             }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
